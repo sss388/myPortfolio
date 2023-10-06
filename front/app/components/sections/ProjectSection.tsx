@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Card, Divider, IconButton, Typography} from "@mui/material";
+import {Box, Button, Card, Divider, IconButton, Modal, Typography} from "@mui/material";
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -25,6 +25,8 @@ const ProjectSection = () => {
     const [project, setProject] = useState<Project>({
         image: '', title: '', summary: '',
     });
+
+    const [modal, setModal] = useState(false)
 
     useEffect(() => {
         axios.get('http://localhost:8090/project/getall')
@@ -102,7 +104,9 @@ const ProjectSection = () => {
                 <Divider color={'black'} className="mb-8 opacity-25"/>
                 <div className="grid grid-cols-4 gap-3 h-[250px]">
                     {projects.map((project, index) => (
-                        <Card className="p-4 relative" key={index}>
+                        <Card className="p-4 relative transition ease-in-out duration-300 hover:scale-110"
+                              key={index} onClick={() => setModal(true)}
+                        >
                             <div className="h-3/4 w-full">
                                 <img src={project.image} className="w-full h-full object-contain"/>
                             </div>
@@ -140,6 +144,14 @@ const ProjectSection = () => {
                     )}
                 </div>
             </Box>
+            <Modal
+                open={modal}
+                onClose={() => setModal(false)}
+            >
+                <Box className="w-screen h-screen bg-white border-[50px]">
+                    <h2 id="parent-modal-title">Text in a modal</h2>
+                </Box>
+            </Modal>
         </Box>
     );
 };
