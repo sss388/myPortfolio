@@ -36,7 +36,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     const [content, setContent] = useState('');
 
     const saveTab = async () => {
-        await axios.post('http://localhost:8090/project/tabSave', {
+        await axios.post(process.env.BACKEND_URL + '/project/tabSave', {
             projectId: selectedId,
             tab,
             content,
@@ -48,7 +48,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     }
 
     const getTab = async () => {
-        await axios.get(`http://localhost:8090/project/getTab?projectId=${selectedId}&tab=${tab}`
+        await axios.get(`${process.env.BACKEND_URL}/project/getTab?projectId=${selectedId}&tab=${tab}`
         ).then((res)=>{
             setContent(res.data);
             // console.log(res.data);

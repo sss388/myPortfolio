@@ -34,7 +34,7 @@ const ProjectSection = () => {
 
     useEffect(() => {
         const getProjects = async () => {
-            await axios.get('http://localhost:8090/project/getall')
+            await axios.get(process.env.BACKEND_URL + '/project/getall')
                 .then((res) => {
                     setProjects(res.data)
                     // console.log(res.data);
@@ -52,7 +52,7 @@ const ProjectSection = () => {
     const saveProject = async () => {
         setCreate(false)
 
-        await axios.post('http://localhost:8090/project/create', project)
+        await axios.post(process.env.BACKEND_URL + '/project/create', project)
             .then((res) => {
                 project.id = res.data;
             }).catch((err) => {
@@ -68,7 +68,7 @@ const ProjectSection = () => {
     }
 
     const deleteProject = async (id: string) => {
-        await axios.delete(`http://localhost:8090/project/delete/${id}`)
+        await axios.delete(`${process.env.BACKEND_URL}/project/delete/${id}`)
             .then((res) => {
                 console.log(res.data);
             }).catch((err) => {
