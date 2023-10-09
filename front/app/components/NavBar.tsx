@@ -1,7 +1,9 @@
 'use client'
 
 import React from 'react';
-import {AppBar, Box, Button, Toolbar, Typography, useScrollTrigger} from "@mui/material";
+import {AppBar, Box, Button, IconButton, Toolbar, Typography, useScrollTrigger} from "@mui/material";
+import {Person, PersonOff, Settings} from "@mui/icons-material";
+import {signIn, signOut, useSession} from 'next-auth/react';
 
 const NavBar = () => {
     const scroll = useScrollTrigger({
@@ -19,6 +21,8 @@ const NavBar = () => {
         }
     };
 
+    const { data: session } = useSession();
+
     return (
         <AppBar color={`${scroll ? 'primary' : 'transparent'}`}>
             <Toolbar className="justify-between flex">
@@ -34,7 +38,7 @@ const NavBar = () => {
                         textDecoration: 'none',
                     }}
                 >
-                    SSS's Portfolio
+                    SSS&apos;s Portfolio
                 </Typography>
                 <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                     {navItems.map((item) => (
@@ -42,6 +46,19 @@ const NavBar = () => {
                             {item}
                         </Button>
                     ))}
+                    {session ? (
+                        <IconButton onClick={() => signOut()}>
+                            {session?.user?.email === process.env.NEXT_PUBLIC_MY_EMAIL as string ? (
+                                <Person/>
+                            ) : (
+                                <PersonOff/>
+                            )}
+                        </IconButton>
+                    ) : (
+                        <IconButton onClick={() => signIn("google")}>
+                            <Settings/>
+                        </IconButton>
+                    )}
                 </Box>
             </Toolbar>
         </AppBar>

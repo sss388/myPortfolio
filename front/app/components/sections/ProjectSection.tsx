@@ -10,6 +10,8 @@ import {Cancel, PlusOne, Save} from "@mui/icons-material";
 import {CldUploadButton, CldUploadWidget} from "next-cloudinary";
 import CreateProject from "@/app/components/CreateProject";
 import axios from "axios";
+import ProjectModal from "@/app/components/modals/ProjectModal";
+import {useSession} from "next-auth/react";
 
 export interface Project {
     id?: string;
@@ -27,15 +29,20 @@ const ProjectSection = () => {
     });
 
     const [modal, setModal] = useState(false)
+    const [selectedId, setSelectedId] = useState('')
+    const { data: session } = useSession();
 
     useEffect(() => {
-        axios.get('http://localhost:8090/project/getall')
-            .then((res) => {
-                setProjects(res.data)
-                console.log(res.data);
-            }).catch((err) => {
-                console.log(err)
-            })
+        const getProjects = async () => {
+            await axios.get('http://localhost:8090/project/getall')
+                .then((res) => {
+                    setProjects(res.data)
+                    // console.log(res.data);
+                }).catch((err) => {
+                    console.log(err)
+                })
+        }
+        getProjects()
     },[])
 
     useEffect(() => {
@@ -54,8 +61,8 @@ const ProjectSection = () => {
 
         setProjects((prevState) => {
             let list: Project[] = []
-            list.push(...prevState)
             list.push(project)
+            list.push(...prevState)
             return list;
         })
     }
@@ -75,8 +82,13 @@ const ProjectSection = () => {
         });
     }
 
+    const openModal = (id: string) => {
+        setModal(true);
+        setSelectedId(id);
+    }
+
     return (
-        <Box className="bg-lime-200 p-8 justify-center flex min-h-[1000px]">
+        <Box className="bg-lime-200 p-8 justify-center flex min-h-[1000px] relative">
             <Box className="w-[1024px] relative">
                 <Typography sx={{color: 'black',
                     textAlign: 'center',
@@ -85,31 +97,40 @@ const ProjectSection = () => {
                 >
                     Projects
                 </Typography>
-                <div className="justify-end flex">
-                    {create ? (
+                <div className="justify-end flex h-[40px]">
+                    {session?.user?.email === process.env.NEXT_PUBLIC_MY_EMAIL as string && (
                         <>
-                            <IconButton onClick={() => saveProject()}>
-                                <Save color={"info"}/>
-                            </IconButton>
-                            <IconButton onClick={() => setCreate(false)}>
-                                <Cancel color={"error"}/>
-                            </IconButton>
+                            {create ? (
+                                <>
+                                    <IconButton onClick={() => saveProject()}>
+                                        <Save color={"info"}/>
+                                    </IconButton>
+                                    <IconButton onClick={() => setCreate(false)}>
+                                        <Cancel color={"error"}/>
+                                    </IconButton>
+                                </>
+                                ) : (
+                                <IconButton onClick={() => setCreate(true)}>
+                                    <PlusOne color={"inherit"}/>
+                                </IconButton>
+                            )}
                         </>
-                        ) : (
-                        <IconButton onClick={() => setCreate(true)}>
-                            <PlusOne color={"inherit"}/>
-                        </IconButton>
                     )}
                 </div>
                 <Divider color={'black'} className="mb-8 opacity-25"/>
                 <div className="grid grid-cols-4 gap-3 h-[250px]">
+                    {create && (
+                        <CreateProject project={project} setProject={setProject} />
+                    )}
+
                     {projects.map((project, index) => (
-                        <Card className="p-4 relative transition ease-in-out duration-300 hover:scale-110"
-                              key={index} onClick={() => setModal(true)}
+                        <Card className="p-4 relative transition ease-in-out duration-300 hover:scale-110 cursor-pointer"
+                              key={index} onClick={() => openModal(project.id || '')}
                         >
                             <div className="h-3/4 w-full">
                                 <img src={project.image} className="w-full h-full object-contain"/>
                             </div>
+
                             <div>
                                 <Typography
                                     sx={{
@@ -135,23 +156,17 @@ const ProjectSection = () => {
                             </div>
                             <Box className="bg-red-500 w-[50px] h-[50px] absolute rounded-full
                                 right-[-25px] hover:scale-[150%] hover:bg-red-300 ease-in-out duration-300
-                                cursor-pointer" onClick={() => deleteProject(project.id || '')}
+                                cursor-pointer"
+                                 onClick={(event) => {
+                                     event.stopPropagation()
+                                     deleteProject(project.id || '')
+                                 }}
                             />
                         </Card>
                     ))}
-                    {create && (
-                        <CreateProject project={project} setProject={setProject} />
-                    )}
                 </div>
             </Box>
-            <Modal
-                open={modal}
-                onClose={() => setModal(false)}
-            >
-                <Box className="w-screen h-screen bg-white border-[50px]">
-                    <h2 id="parent-modal-title">Text in a modal</h2>
-                </Box>
-            </Modal>
+            <ProjectModal modal={modal} setModal={setModal} selectedId={selectedId} email={session?.user?.email || ''}/>
         </Box>
     );
 };

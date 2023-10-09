@@ -1,6 +1,7 @@
 package com.example.back.project.controller;
 
 import com.example.back.project.entity.Project;
+import com.example.back.project.entity.ProjectTab;
 import com.example.back.project.service.ProjectService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,16 @@ public class ProjectController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/tabSave")
+    public String tabSave(@RequestBody ProjectTab projectTab) {
+        return projectService.saveProjectTab(projectTab);
+    }
+
+    @GetMapping("/getTab")
+    public String getProjectTab(@RequestParam String projectId, @RequestParam String tab) {
+        ProjectTab exists = projectService.getProjectTab(projectId, tab);
+        if(exists != null) return projectService.getProjectTab(projectId, tab).getContent();
+
+        return "empty";
+    }
 }

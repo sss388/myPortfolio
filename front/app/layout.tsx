@@ -4,7 +4,8 @@ import './globals.css'
 import React from "react";
 import NavBar from "@/app/components/NavBar";
 import {createTheme, ThemeProvider} from "@mui/material";
-import { grey } from '@mui/material/colors';
+import {grey, indigo} from '@mui/material/colors';
+import AuthContext from "@/app/context/AuthContext";
 
 const theme = createTheme({
     palette: {
@@ -12,7 +13,7 @@ const theme = createTheme({
             main: grey[800],
         },
         secondary: {
-            main: '#f44336',
+            main: indigo[500],
         },
     },
 });
@@ -25,13 +26,15 @@ export default function RootLayout({
   return (
     <html lang="ko">
         <head>
-            <title>SSS's Portfolio</title>
+            <title>SSS&apos;s Portfolio</title>
         </head>
         <body>
-            <ThemeProvider theme={theme}>
-                <NavBar />
-                {children}
-            </ThemeProvider>
+            <AuthContext>
+                <ThemeProvider theme={theme}>
+                    <NavBar />
+                    {children}
+                </ThemeProvider>
+            </AuthContext>
         </body>
     </html>
   )
