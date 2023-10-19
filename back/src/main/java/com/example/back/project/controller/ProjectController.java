@@ -14,7 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/project")
-@CrossOrigin(origins = "http://ec2-13-236-177-72.ap-southeast-2.compute.amazonaws.com:3000")
+@CrossOrigin(origins = "http://ec2-3-27-129-86.ap-southeast-2.compute.amazonaws.com:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class ProjectController {
     @Autowired
     ProjectService projectService;

@@ -16,7 +16,7 @@ const SkillSection = () => {
     ]
 
     const DBSkills: string[] = [
-        'Oracle', 'SQL-Developer', 'MySQL', 'PostgreSQL', 'MongoDB', 'PlanetScale'
+        'Oracle', 'MySQL', 'PostgreSQL', 'MongoDB', 'PlanetScale'
     ]
 
     const deploymentSkills: string[] = [
@@ -24,7 +24,7 @@ const SkillSection = () => {
     ]
 
     const toolSkills: string[] = [
-        'Sourcetree', 'Eclipse', 'VS-Code', 'IntelliJ'
+        'Eclipse', 'VS-Code', 'IntelliJ', 'SQL-Developer',
     ]
 
     const communicationSkills: string[] = [
@@ -32,7 +32,7 @@ const SkillSection = () => {
     ]
 
     const versionControlSkills: string[] = [
-        'git', 'GitHub'
+        'git', 'GitHub', 'Sourcetree',
     ]
 
     const certificateSkills: string[] = [

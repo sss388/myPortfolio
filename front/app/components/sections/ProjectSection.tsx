@@ -154,14 +154,16 @@ const ProjectSection = () => {
                                     {project.summary}
                                 </Typography>
                             </div>
-                            <Box className="bg-red-500 w-[50px] h-[50px] absolute rounded-full
+                            {session?.user?.email === process.env.NEXT_PUBLIC_MY_EMAIL as string && (
+                                <Box className="bg-red-500 w-[50px] h-[50px] absolute rounded-full
                                 right-[-25px] hover:scale-[150%] hover:bg-red-300 ease-in-out duration-300
                                 cursor-pointer"
-                                 onClick={(event) => {
-                                     event.stopPropagation()
-                                     deleteProject(project.id || '')
-                                 }}
-                            />
+                                     onClick={(event) => {
+                                         event.stopPropagation()
+                                         deleteProject(project.id || '')
+                                     }}
+                                />
+                            )}
                         </Card>
                     ))}
                 </div>
