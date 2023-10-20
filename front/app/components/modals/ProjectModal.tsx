@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Box, IconButton, Modal} from "@mui/material";
+import {Box, CircularProgress, IconButton, Modal} from "@mui/material";
 import {Close, EditOff, Mode, Save} from "@mui/icons-material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -34,6 +34,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     ];
     const [modify, setModify] = useState(false);
     const [content, setContent] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const saveTab = async () => {
         await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/project/tabSave', {
@@ -48,11 +49,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     }
 
     const getTab = async () => {
+        setLoading(true);
+
         await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/getTab?projectId=${selectedId}&tab=${tab}`
         ).then((res)=>{
             setContent(res.data);
             // console.log(res.data);
         })
+
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -96,18 +101,24 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                     onChange={(event, newValue) => {
                         setTab(newValue); setModify(false)
                     }}
-                    textColor="primary"
+                    textColor={`primary`}
                     indicatorColor="secondary"
                 >
                     {tabs.map((item, index) => (
-                        <Tab value={item.value} label={item.label} key={index}/>
+                        <Tab value={item.value} label={item.label} key={index} disabled={loading}/>
                     ))}
                 </Tabs>
 
-                <TabContent modify={modify}
-                            content={content}
-                            setContent={setContent}
-                />
+                {loading ? (
+                    <div className="justify-center items-center flex h-full">
+                        <CircularProgress />
+                    </div>
+                ) : (
+                    <TabContent modify={modify}
+                                content={content}
+                                setContent={setContent}
+                    />
+                )}
             </Box>
         </Modal>
     );
