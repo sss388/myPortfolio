@@ -22,7 +22,7 @@ const TabContent: React.FC<TabContentProps> = ({
                     />
                 </div>
             ) : (
-                <div className="p-6 overflow-y-auto max-h-[720px]">
+                <div className="p-6 overflow-y-auto h-[75vh]">
                     <div dangerouslySetInnerHTML={ {__html:content}}></div>
                 </div>
             )}

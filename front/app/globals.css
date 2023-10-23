@@ -42,8 +42,8 @@ main .ck-editor[role='application'] .ck.ck-content,
     background: #fff;
     font-size: 1em;
     line-height: 1.6em;
-    min-height: 680px;
-    max-height: 680px;
+    min-height: 75vh;
+    max-height: 75vh;
     padding: 1.5em 2em;
     @apply overflow-y-auto;
 }

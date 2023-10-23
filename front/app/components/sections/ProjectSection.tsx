@@ -118,13 +118,14 @@ const ProjectSection = () => {
                     )}
                 </div>
                 <Divider color={'black'} className="mb-8 opacity-25"/>
-                <div className="grid grid-cols-4 gap-3 h-[250px]">
+                <div className="grid grid-cols-4 gap-3 h-auto">
                     {create && (
                         <CreateProject project={project} setProject={setProject} />
                     )}
 
                     {projects.map((project, index) => (
-                        <Card className="p-4 relative transition ease-in-out duration-300 hover:scale-110 cursor-pointer"
+                        <Card className="p-4 relative transition ease-in-out duration-300 hover:scale-110 cursor-pointer
+                              h-[250px]"
                               key={index} onClick={() => openModal(project.id || '')}
                         >
                             <div className="h-3/4 w-full">

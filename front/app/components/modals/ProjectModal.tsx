@@ -72,7 +72,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             <Box className="left-[5%] top-[5%] w-[90%] h-[90%] bg-white border-[5px] relative
                 rounded-lg border-black p-6"
             >
-                {email === process.env.NEXT_PUBLIC_MY_EMAIL as string && (
+                {email === process.env.NEXT_PUBLIC_MY_EMAIL as string ? (
                     <div className="absolute right-2 top-2 z-10">
                         <IconButton color={"info"}
                             onClick={()=>setModify(!modify)}
@@ -88,6 +88,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                             </IconButton>
                         )}
 
+                        <IconButton color={"error"}
+                                    onClick={() => setModal(false)}
+                        >
+                            <Close/>
+                        </IconButton>
+                    </div>
+                ): (
+                    <div className="absolute right-2 top-2 z-10">
                         <IconButton color={"error"}
                                     onClick={() => setModal(false)}
                         >
@@ -111,7 +119,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
                 {loading ? (
                     <div className="justify-center items-center flex h-full">
-                        <CircularProgress />
+                        <CircularProgress color={"primary"}/>
                     </div>
                 ) : (
                     <TabContent modify={modify}

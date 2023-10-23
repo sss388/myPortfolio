@@ -88,7 +88,6 @@ const CreateProject: React.FC<CreateProjectProps> = ({
                            ...prevState, summary: event.target.value
                        }))}
             />
-            <Button className="absolute bottom-0" color={"info"}>등록</Button>
         </Card>
     );
 };
