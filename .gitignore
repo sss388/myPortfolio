@@ -1,2 +1,4 @@
 back/target/
 front/.env
+.idea/**
+Portfolio.iml
